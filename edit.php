@@ -7,6 +7,9 @@ $error = null;
 $id = $pdo->quote($_GET['id']);
 
 try {
+    if(isset($_POST['name'], $_POST['content'])){
+        
+    }
     $query = $pdo->prepare('SELECT * FROM posts WHERE id = :id');
     $query->execute([
         'id' => $_GET['id']
@@ -30,7 +33,7 @@ require 'header.php';
                            value="<?php echo htmlentities($posts->name) ?>">
                 </div>
                 <div class="form-group mt-4">
-                    <textarea class="form-control" name="name"><?php echo htmlentities($posts->content) ?></textarea>
+                    <textarea class="form-control" name="content"><?php echo htmlentities($posts->content) ?></textarea>
                 </div>
                 <button class="btn btn-primary mt-4">Sauvegarder</button>
             </form>
