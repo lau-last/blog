@@ -4,11 +4,18 @@ $pdo = new PDO('sqlite:data.db', null, null, [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
 ]);
 $error = null;
+$success = null;
 $id = $pdo->quote($_GET['id']);
 
 try {
-    if(isset($_POST['name'], $_POST['content'])){
-        
+    if (isset($_POST['name'], $_POST['content'])) {
+        $query = $pdo->prepare('UPDATE posts SET name = :name, content = :content WHERE id = :id');
+        $query->execute([
+            'name' => $_POST['name'],
+            'content' => $_POST['content'],
+            'id' => $_GET['id']
+        ]);
+        $success = 'Votre article a bien ete modifié';
     }
     $query = $pdo->prepare('SELECT * FROM posts WHERE id = :id');
     $query->execute([
@@ -22,6 +29,12 @@ require 'header.php';
 ?>
 
     <div class="container">
+        <p>
+            <a href="index.php">Revenir au listing</a>
+        </p>
+        <?php if ($success): ?>
+            <div class="alert alert-success"><?php echo $success ?></div>
+        <?php endif ?>
         <?php if ($error): ?>
             <div class="alert alert-danger">
                 <?php echo $error ?>
