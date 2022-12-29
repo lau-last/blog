@@ -14,7 +14,7 @@ class Post
         }
     }
 
-    public function getExcerpt()
+    public function getExcerpt(): string
     {
         return substr($this->content, 0,150);
     }
